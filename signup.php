@@ -1,6 +1,3 @@
-<?php
-	session_start();
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,15 +23,15 @@
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="index.php">Library Management System (LMS)</a>
+				<a class="navbar-brand" href="#">Library Management System (LMS)</a>
 			</div>
 	
 		    <ul class="nav navbar-nav navbar-right">
 		      <li class="nav-item">
-		        <a class="nav-link" href="admin/index.php">Admin Login</a>
+		        <a class="nav-link" href="index.php">Admin Login</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="signup.php"></span>Register</a>
+		        <a class="nav-link" href="#"></span>Register</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="index.php">Login</a>
@@ -62,8 +59,12 @@
 			</ul>
 		</div>
 		<div class="col-md-8" id="main_content">
-			<center><h3><u>User Login Form</u></h3></center>
-			<form action="" method="post">
+			<center><h3><u>User Registration Form</u></h3></center>
+			<form action="register.php" method="post">
+				<div class="form-group">
+					<label for="name">Full Name:</label>
+					<input type="text" name="name" class="form-control" required>
+				</div>
 				<div class="form-group">
 					<label for="email">Email ID:</label>
 					<input type="text" name="email" class="form-control" required>
@@ -72,32 +73,16 @@
 					<label for="password">Password:</label>
 					<input type="password" name="password" class="form-control" required>
 				</div>
-				<button type="submit" name="login" class="btn btn-primary">Login</button> |
-				<a href="signup.php"> Not registered yet ?</a>	
+				<div class="form-group">
+					<label for="mobile">Mobile:</label>
+					<input type="text" name="mobile" class="form-control" required>
+				</div>
+				<div class="form-group">
+					<label for="address">Address:</label>
+					<textarea name="address" class="form-control" required></textarea> 
+				</div>
+				<button type="submit" class="btn btn-primary">Register</button>	
 			</form>
-			<?php 
-				if(isset($_POST['login'])){
-					$connection = mysqli_connect("localhost","root","");
-					$db = mysqli_select_db($connection,"lms");
-					$query = "select * from users where email = '$_POST[email]'";
-					$query_run = mysqli_query($connection,$query);
-					while ($row = mysqli_fetch_assoc($query_run)) {
-						if($row['email'] == $_POST['email']){
-							if($row['password'] == $_POST['password']){
-								$_SESSION['name'] =  $row['name'];
-								$_SESSION['email'] =  $row['email'];
-								$_SESSION['id'] =  $row['id'];
-								header("Location: user_dashboard.php");
-							}
-							else{
-								?>
-								<br><br><center><span class="alert-danger">Wrong Password !!</span></center>
-								<?php
-							}
-						}
-					}
-				}
-			?>
 		</div>
 	</div>
 </body>

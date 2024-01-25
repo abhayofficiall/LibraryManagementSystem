@@ -1,19 +1,15 @@
 <?php
 	session_start();
-	#fetch data from database
-	$connection = mysqli_connect("localhost","root","");
-	$db = mysqli_select_db($connection,"lms");
-	$name = "";
-	$email = "";
-	$mobile = "";
-	$address = "";
-	$query = "select * from users where email = '$_SESSION[email]'";
-	$query_run = mysqli_query($connection,$query);
-	while ($row = mysqli_fetch_assoc($query_run)){
-		$name = $row['name'];
-		$email = $row['email'];
-		$mobile = $row['mobile'];
-		$address = $row['address'];
+	function get_user_issue_book_count(){
+		$connection = mysqli_connect("localhost","root","");
+		$db = mysqli_select_db($connection,"lms");
+		$user_issue_book_count = 0;
+		$query = "select count(*) as user_issue_book_count from issued_books where student_id = $_SESSION[id]";
+		$query_run = mysqli_query($connection,$query);
+		while ($row = mysqli_fetch_assoc($query_run)){
+			$user_issue_book_count = $row['user_issue_book_count'];
+		}
+		return($user_issue_book_count);
 	}
 ?>
 <!DOCTYPE html>
@@ -45,37 +41,24 @@
 	        	</div>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="../logout.php">Logout</a>
+		        <a class="nav-link" href="logout.php">Logout</a>
 		      </li>
 		    </ul>
 		</div>
 	</nav><br>
 	<span><marquee>This is library mangement system. Library opens at 8:00 AM and close at 8:00 PM</marquee></span><br><br>
-		<center><h4>Edit Profile</h4><br></center>
-		<div class="row">
-			<div class="col-md-4"></div>
-			<div class="col-md-4">
-				<form action="update.php" method="post">
-					<div class="form-group">
-						<label for="name">Name:</label>
-						<input type="text" class="form-control" name="name" value="<?php echo $name;?>">
-					</div>
-					<div class="form-group">
-						<label for="email">Email:</label>
-						<input type="text" name="email" class="form-control" value="<?php echo $email;?>">
-					</div>
-					<div class="form-group">
-						<label for="mobile">Mobile:</label>
-						<input type="text" name="mobile" class="form-control" value="<?php echo $mobile;?>">
-					</div>
-					<div class="form-group">
-						<label for="mobile">Address:</label>
-						<textarea rows="3" cols="40" name="address" class="form-control"><?php echo $address;?></textarea>
-					</div>
-					<button type="submit" name="update" class="btn btn-primary">Update</button>
-				</form>
+	<div class="row">
+		<div class="col-md-3" style="margin: 25px">
+			<div class="card bg-light" style="width: 300px">
+				<div class="card-header">Book Issued</div>
+				<div class="card-body">
+					<p class="card-text">No of book issued: <?php echo get_user_issue_book_count();?></p>
+					<a class="btn btn-success" href="view_issued_book.php">View Issued Books</a>
+				</div>
 			</div>
-			<div class="col-md-4"></div>
 		</div>
+		<div class="col-md-3"></div>
+		<div class="col-md-3"></div>
+	</div>
 </body>
 </html>
